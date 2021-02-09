@@ -1,0 +1,40 @@
+class App extends Component {
+  state = { Customers: null }
+  
+  componentDidMount(){
+    db.collection('Customers').get().then( snapshot => {
+      const Customers = []
+      snapshot.forEach( doc => {
+        const data = doc.data()
+        Customers.push(data)
+      })
+      this.setState({Customers: Customers})
+      console.log(snapshot)
+    })
+    .catch( error => console.log(error()))
+  }
+
+
+  render() { 
+    return ( 
+      <div className="main">
+
+        <Route path="./User.js" component={User}/>
+
+        <h1>Banking App</h1>
+        {
+          this.state.Customers &&
+          this.state.Customers.map( Customer => {
+            return(
+              <div className="flex">
+                <p>{Customer.name}</p>
+                <p className="value">{Customer.value}</p>
+                <button onClick={()=> {<Link to='/User'/>}}>Select</button>
+              </div>
+            )
+          })
+        }
+      </div>
+     );
+  }
+}
