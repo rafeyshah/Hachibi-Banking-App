@@ -5,23 +5,19 @@ import './User.css'
 
 class User extends Component {
     state = { Customers: null }
-  
-    fetchingData() { 
+    
+    componentDidMount(){
         db.collection('Customers').get().then( snapshot => {
             const Customers = []
             snapshot.forEach( doc => {
-              const data = doc.data()
-       
-              Customers.push(data)
+            let currentID = doc.id
+            let appObj = { ...doc.data(), ['id']: currentID }
+            Customers.push(appObj)
             })
             this.setState({Customers: Customers})
-            console.log(snapshot)
+            
           })
           .catch( error => console.log(error()))
-    }
-    
-    componentDidMount(){
-        this.fetchingData()
     }
 
     render() { 
@@ -43,6 +39,7 @@ class User extends Component {
                                 state: {
                                     name: Customer.name,
                                     value: Customer.value,
+                                    id: Customer.id,
                                     fetch: this.state.Customers
                                 }
                                 }}>
