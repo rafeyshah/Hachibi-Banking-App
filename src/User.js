@@ -2,6 +2,7 @@ import React, {Component } from 'react'
 import {db , auth} from './fire'
 import {Route, Link} from 'react-router-dom'
 import './User.css'
+import Navbar from './Navbar'
 
 class User extends Component {
     state = { Customers: null }
@@ -22,11 +23,12 @@ class User extends Component {
 
     render() { 
         return ( 
+<>
         <div className="main">
 
             <Route path="./User.js" component={User}/>
-
-            <h1>Banking App</h1>
+            
+            <h1 style={{marginTop: '100px'}}>Banking App</h1>
             {
                 this.state.Customers &&
                 this.state.Customers.map( Customer => {
@@ -50,6 +52,7 @@ class User extends Component {
                 })
             }
         </div>
+        </>
          );
     }
 }

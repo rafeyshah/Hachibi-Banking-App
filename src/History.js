@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {db , auth} from './fire'
 import './History.css'
+import Navbar from './Navbar'
 
 
 class History extends Component {

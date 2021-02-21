@@ -3,6 +3,7 @@ import {db , auth} from './fire'
 import Select from 'react-select';
 import {Route, Link} from 'react-router-dom'
 
+import Navbar from './Navbar'
 
 class Transfer extends Component {
     
@@ -79,6 +80,7 @@ class Transfer extends Component {
     render() { 
         return (
             <div>
+               
                 <p>{this.props.location.state.name}</p>
                 <p>{this.props.location.state.value}</p>
                 
