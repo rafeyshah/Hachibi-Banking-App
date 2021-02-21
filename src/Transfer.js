@@ -1,6 +1,8 @@
 import React, { Component, } from 'react'
 import {db , auth} from './fire'
 import Select from 'react-select';
+import {Route, Link} from 'react-router-dom'
+
 
 class Transfer extends Component {
     
@@ -8,7 +10,9 @@ class Transfer extends Component {
               select: null, 
               inputValue: null,
               final: null,
-              inputId: null
+              final2: null,
+              Rname: null,
+              Tname: null,  
             };
     
     
@@ -20,12 +24,10 @@ class Transfer extends Component {
                             let currentID = doc.id
                             let appObj = { ...doc.data(), ['id']: currentID }
                             Customers.push(appObj)
-                            
-                            
-                            
+
                         })
                         this.setState({Customers: Customers})
-                        
+                       
                       })
                       .catch( error => console.log(error()))
 
@@ -50,23 +52,23 @@ class Transfer extends Component {
                         (Customer.value) = Number(Customer.value) + Number(this.state.inputValue);
                         (this.props.location.state.value) = Number(this.props.location.state.value) - Number(this.state.inputValue)
                         
-                        this.setState({final: Customer.value})
-                        this.setState({final2: this.props.location.state.value})
-
-
-                        db.collection("Customers").doc(`'${Customer.id}'`).update({
-                        value: this.state.final
+                        db.collection("Customers").doc(Customer.id).update({
+                            value: Customer.value
                         })
                         
-                        db.collection("Customers").doc(`'${this.props.location.state.id}'`).update({
-                            value: this.state.final2
+                        db.collection("Customers").doc(this.props.location.state.id).update({
+                            value: this.props.location.state.value
                             })
 
-                            
+                        this.setState({final: Customer.value})
+                        this.setState({final2: this.props.location.state.value})
+                        this.setState({Rname: Customer.name})
+                        this.setState({Tname: this.props.location.state.name})
+                       
                         }
                         
-                    
             }
+
             
         )
 
@@ -119,8 +121,20 @@ class Transfer extends Component {
                 <button onClick={this.updateDatabase}>Submit</button>
                     
                 {/* Transfer it */}
-                <p>{`Current Balance: ${this.state.final2}`}</p>
                 
+                <Link to={{
+                                pathname: '/History',
+                                state: {
+                                    RtoMoney: this.state.final,
+                                    Tmoney: this.state.final2,
+                                    receiver: this.state.Rname,
+                                    transferer: this.state.Tname,
+                                    
+                                }
+                                }}>
+                                    History
+                </Link>
+            
                 </div>
                 )}}
 export default Transfer; 
